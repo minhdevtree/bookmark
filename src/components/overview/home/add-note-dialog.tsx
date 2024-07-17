@@ -39,7 +39,7 @@ const formSchema = z.object({
         .max(20, 'Title is too long'),
     content: z
         .string()
-        .max(100, 'Content is too long')
+        .max(2000, 'Content is too long')
         .optional()
         .or(z.literal('')),
 });
@@ -132,7 +132,7 @@ export function AddNoteDialog({
                                         <Textarea
                                             placeholder="Content"
                                             disabled={isLoading}
-                                            className="resize-none"
+                                            className="resize-none min-h-44"
                                             {...field}
                                         />
                                     </FormControl>
