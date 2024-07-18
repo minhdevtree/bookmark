@@ -23,7 +23,7 @@ export function TaskContextMenu({
         <ContextMenu>
             <ContextMenuTrigger>{children}</ContextMenuTrigger>
             <ContextMenuContent className="w-32">
-                {task.type === 'Bookmark' && (
+                {task.type === 'BOOKMARK' && (
                     <EditBookmarkDialog task={task} setChange={setChange} />
                 )}
                 {task.type === 'TASK' && (
