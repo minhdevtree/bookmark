@@ -12,7 +12,7 @@ export default function Home() {
     const [change, setChange] = useState(false);
     return (
         <div>
-            <header className="flex justify-between w-full flex-row p-4 h-[10vh] sticky top-0 z-50 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <header className="flex justify-between w-full flex-row p-4 h-[10vh] sticky top-0 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <Button
                     variant="link"
                     asChild
