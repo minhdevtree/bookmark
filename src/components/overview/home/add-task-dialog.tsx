@@ -88,7 +88,9 @@ export function AddTaskDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Add Task</Button>
+                <Button variant="default" size="xs">
+                    Add Task
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>

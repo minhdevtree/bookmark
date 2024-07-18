@@ -71,7 +71,7 @@ export function BoardColumn({
     };
 
     const variants = cva(
-        'h-card w-[350px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center',
+        'h-card w-[300px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center',
         {
             variants: {
                 dragging: {
@@ -112,7 +112,7 @@ export function BoardColumn({
                 </CardHeader>
             </BoardColumnContextMenu>
 
-            <div className="flex justify-center gap-2 p-2">
+            <div className="flex justify-center gap-2 pt-2">
                 <AddBookmarkDialog columnId={column.id} setChange={setChange} />
                 <AddNoteDialog columnId={column.id} setChange={setChange} />
                 <AddTaskDialog columnId={column.id} setChange={setChange} />

@@ -119,7 +119,7 @@ export function TaskCard({
                     >
                         <CardHeader
                             className={cn(
-                                'px-3 py-3 space-between flex flex-row relative'
+                                'px-2 py-1 space-between flex flex-row relative space-y-0'
                             )}
                         >
                             <div className="mr-auto flex gap-2">
@@ -133,7 +133,7 @@ export function TaskCard({
                                             }}
                                             width={24}
                                             height={24}
-                                            className="overflow-hidden w-7 h-7 rounded-md"
+                                            className="overflow-hidden w-5 h-5 rounded-md"
                                         />
                                     ) : (
                                         <Image
@@ -147,7 +147,7 @@ export function TaskCard({
                                             }}
                                             width={24}
                                             height={24}
-                                            className="overflow-hidden w-7 h-7 rounded-md"
+                                            className="overflow-hidden w-5 h-5 rounded-md"
                                         />
                                     )}
                                 </div>
@@ -194,7 +194,7 @@ export function TaskCard({
                 >
                     <CardHeader
                         className={cn(
-                            'px-3 py-3 space-between flex flex-row relative',
+                            'px-2 py-1 space-between flex flex-row relative space-y-0',
                             task?.content && 'border-b-2 border-secondary'
                         )}
                     >
@@ -230,7 +230,7 @@ export function TaskCard({
                         </Button>
                     </CardHeader>
                     {task.content && (
-                        <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
+                        <CardContent className="px-2 py-1 text-left whitespace-pre-wrap">
                             {task.content}
                         </CardContent>
                     )}
@@ -253,7 +253,7 @@ export function TaskCard({
                 >
                     <CardHeader
                         className={cn(
-                            'px-3 py-3 space-between flex flex-row relative'
+                            'px-2 py-1 space-between flex flex-row relative space-y-0'
                             // task?.content && 'border-b-2 border-secondary'
                         )}
                     >
@@ -298,7 +298,7 @@ export function TaskCard({
             >
                 <CardHeader
                     className={cn(
-                        'px-3 py-3 space-between flex flex-row relative'
+                        'px-2 py-1 space-between flex flex-row relative space-y-0'
                     )}
                 >
                     <div className="mr-auto flex gap-2">

@@ -88,7 +88,9 @@ export function AddNoteDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Add Note</Button>
+                <Button variant="default" size="xs">
+                    Add Note
+                </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
