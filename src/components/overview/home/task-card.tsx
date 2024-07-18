@@ -119,7 +119,7 @@ export function TaskCard({
                     >
                         <CardHeader
                             className={cn(
-                                'px-2 py-1 space-between flex flex-row relative space-y-0'
+                                'p-2 space-between flex flex-row relative space-y-0'
                             )}
                         >
                             <div className="mr-auto flex gap-2">
@@ -194,7 +194,7 @@ export function TaskCard({
                 >
                     <CardHeader
                         className={cn(
-                            'px-2 py-1 space-between flex flex-row relative space-y-0',
+                            'p-2 space-between flex flex-row relative space-y-0',
                             task?.content && 'border-b-2 border-secondary'
                         )}
                     >
@@ -230,7 +230,7 @@ export function TaskCard({
                         </Button>
                     </CardHeader>
                     {task.content && (
-                        <CardContent className="px-2 py-1 text-left whitespace-pre-wrap">
+                        <CardContent className="p-2 text-left whitespace-pre-wrap">
                             {task.content}
                         </CardContent>
                     )}
@@ -253,7 +253,7 @@ export function TaskCard({
                 >
                     <CardHeader
                         className={cn(
-                            'px-2 py-1 space-between flex flex-row relative space-y-0'
+                            'p-2 space-between flex flex-row relative space-y-0'
                             // task?.content && 'border-b-2 border-secondary'
                         )}
                     >
@@ -298,7 +298,7 @@ export function TaskCard({
             >
                 <CardHeader
                     className={cn(
-                        'px-2 py-1 space-between flex flex-row relative space-y-0'
+                        'p-2 space-between flex flex-row relative space-y-0'
                     )}
                 >
                     <div className="mr-auto flex gap-2">
