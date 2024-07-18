@@ -36,7 +36,7 @@ const formSchema = z.object({
             required_error: 'Title is required',
         })
         .min(1, 'Title is required')
-        .max(20, 'Title is too long'),
+        .max(40, 'Title is too long'),
     content: z
         .string()
         .max(2000, 'Content is too long')
@@ -92,7 +92,7 @@ export function AddNoteDialog({
                     Add Note
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[90vw]">
                 <DialogHeader>
                     <DialogTitle>Add Note</DialogTitle>
                     <DialogDescription>
@@ -134,7 +134,7 @@ export function AddNoteDialog({
                                         <Textarea
                                             placeholder="Content"
                                             disabled={isLoading}
-                                            className="resize-none min-h-44"
+                                            className="resize-none min-h-96"
                                             {...field}
                                         />
                                     </FormControl>

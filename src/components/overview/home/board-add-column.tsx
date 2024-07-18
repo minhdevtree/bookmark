@@ -40,7 +40,7 @@ const formSchema = z.object({
             required_error: 'Title is required',
         })
         .min(1, 'Title is required')
-        .max(20, 'Title is too long'),
+        .max(40, 'Title is too long'),
 });
 
 export function BoardAddColumn({

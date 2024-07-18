@@ -35,10 +35,10 @@ const formSchema = z.object({
             required_error: 'Title is required',
         })
         .min(1, 'Title is required')
-        .max(20, 'Title is too long'),
+        .max(40, 'Title is too long'),
     content: z
         .string()
-        .max(100, 'Content is too long')
+        .max(2000, 'Content is too long')
         .optional()
         .or(z.literal('')),
 });
@@ -88,7 +88,7 @@ export function EditTaskDialog({
                     <FilePenLine className="w-4 h-4" />
                 </div>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[90vw]">
                 <DialogHeader>
                     <DialogTitle>Edit {task.type.toLowerCase()}</DialogTitle>
                     <DialogDescription>
@@ -130,7 +130,7 @@ export function EditTaskDialog({
                                         <Textarea
                                             placeholder="Content"
                                             disabled={isLoading}
-                                            className="resize-none"
+                                            className="resize-none min-h-96"
                                             {...field}
                                         />
                                     </FormControl>

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cva } from 'class-variance-authority';
 import { GripVertical } from 'lucide-react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, showLessText } from '@/lib/utils';
 import Link from 'next/link';
 import { BasicTooltip } from '@/components/shared/tool-tip';
 import { TaskContextMenu } from './task-context-menu';
@@ -154,7 +154,7 @@ export function TaskCard({
 
                                 <span className="flex items-center line-clamp-1">
                                     <BasicTooltip
-                                        title={task.title}
+                                        title={showLessText(task.title, 20)}
                                         tooltipTitle={
                                             task.content
                                                 ? task.content
@@ -194,8 +194,7 @@ export function TaskCard({
                 >
                     <CardHeader
                         className={cn(
-                            'p-2 space-between flex flex-row relative space-y-0',
-                            task?.content && 'border-b-2 border-secondary'
+                            'p-2 space-between flex flex-row relative space-y-0'
                         )}
                     >
                         <div className="mr-auto flex gap-2">
@@ -214,7 +213,7 @@ export function TaskCard({
                                         task.isCompleted && 'line-through'
                                     )}
                                 >
-                                    {task.title}
+                                    {showLessText(task.title, 20)}
                                 </label>
                             </div>
                         </div>
@@ -229,11 +228,6 @@ export function TaskCard({
                             <GripVertical />
                         </Button>
                     </CardHeader>
-                    {task.content && (
-                        <CardContent className="p-2 text-left whitespace-pre-wrap">
-                            {task.content}
-                        </CardContent>
-                    )}
                 </Card>
             </TaskContextMenu>
         );
@@ -254,13 +248,12 @@ export function TaskCard({
                     <CardHeader
                         className={cn(
                             'p-2 space-between flex flex-row relative space-y-0'
-                            // task?.content && 'border-b-2 border-secondary'
                         )}
                     >
                         <div className="mr-auto flex gap-2">
                             <div className="flex items-center">
                                 <span className="flex items-center line-clamp-1">
-                                    {task.title}
+                                    {showLessText(task.title, 20)}
                                 </span>
                             </div>
                         </div>
@@ -275,11 +268,6 @@ export function TaskCard({
                             <GripVertical />
                         </Button>
                     </CardHeader>
-                    {/* {task.content && (
-                        <CardContent className="px-3 pt-3 pb-6 text-left whitespace-pre-wrap">
-                            {task.content}
-                        </CardContent>
-                    )} */}
                 </Card>
             </TaskContextMenu>
         );

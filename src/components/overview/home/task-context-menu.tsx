@@ -8,7 +8,6 @@ import { EditBookmarkDialog } from './edit-bookmark-dialog';
 import { DeleteTaskDialog } from './delete-task-dialog';
 import { EditTaskDialog } from './edit-task-dialog';
 import { EditNoteDialog } from './edit-note-dialog';
-import { ViewNoteDialog } from './view-note-dialog';
 
 export function TaskContextMenu({
     task,
@@ -31,7 +30,6 @@ export function TaskContextMenu({
                 )}
                 {task.type === 'NOTE' && (
                     <>
-                        <ViewNoteDialog task={task} />
                         <EditNoteDialog task={task} setChange={setChange} />
                     </>
                 )}
