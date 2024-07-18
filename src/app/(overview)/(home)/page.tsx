@@ -36,7 +36,7 @@ export default function Home() {
                     <SettingDialog setChange={setChange} />
                 </div>
             </header>
-            <div className="w-full text-center">
+            <div className="w-full text-center fixed">
                 <KanbanBoard setChange={setChange} change={change} />
             </div>
         </div>

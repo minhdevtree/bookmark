@@ -71,7 +71,7 @@ export function BoardColumn({
     };
 
     const variants = cva(
-        'h-card w-[300px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center',
+        'h-card w-[310px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center',
         {
             variants: {
                 dragging: {

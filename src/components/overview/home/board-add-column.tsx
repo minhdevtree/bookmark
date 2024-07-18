@@ -83,7 +83,7 @@ export function BoardAddColumn({
     }
 
     return (
-        <Card className="h-card w-[300px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center border-2 border-transparent">
+        <Card className="h-card w-[310px] max-w-full bg-primary-foreground flex flex-col flex-shrink-0 snap-center border-2 border-transparent">
             <CardHeader className="px-4 py-2 font-semibold border-b-2 text-left flex flex-row space-between items-center">
                 <span className="mr-auto flex items-center">Add Column</span>
                 <Button

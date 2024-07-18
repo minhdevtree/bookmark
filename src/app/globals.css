@@ -69,9 +69,6 @@
 }
 
 .h-card {
-    height: calc(90vh - 3rem);
-    max-height: calc(90vh - 3rem);
-
-    /* height: 85vh;
-    max-height: 85vh; */
+    height: calc(90vh - 1.1rem);
+    max-height: calc(90vh - 1.1rem);
 }

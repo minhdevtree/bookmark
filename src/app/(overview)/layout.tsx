@@ -14,9 +14,5 @@ export default function HomeLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return (
-        <main className="bg-background md:px-10 md:py-4 lg:px-16 lg:pb-8 lg:pt-5 px-2 py-2">
-            {children}
-        </main>
-    );
+    return <main className="bg-background px-2 pb-2">{children}</main>;
 }
