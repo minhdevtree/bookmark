@@ -96,7 +96,7 @@ export function TaskCard({
 
         localStorage.setItem('tasks', JSON.stringify(tasks));
         setChange((pre: boolean) => !pre);
-        toast.success('Task updated successfully');
+        toast.success('Task updated');
     };
 
     if (task.type === 'BOOKMARK') {
@@ -109,13 +109,16 @@ export function TaskCard({
                     <Card
                         ref={setNodeRef}
                         style={style}
-                        className={variants({
-                            dragging: isOverlay
-                                ? 'overlay'
-                                : isDragging
-                                ? 'over'
-                                : undefined,
-                        })}
+                        className={cn(
+                            variants({
+                                dragging: isOverlay
+                                    ? 'overlay'
+                                    : isDragging
+                                    ? 'over'
+                                    : undefined,
+                            }),
+                            'border-none'
+                        )}
                     >
                         <CardHeader
                             className={cn(
@@ -184,13 +187,16 @@ export function TaskCard({
                 <Card
                     ref={setNodeRef}
                     style={style}
-                    className={variants({
-                        dragging: isOverlay
-                            ? 'overlay'
-                            : isDragging
-                            ? 'over'
-                            : undefined,
-                    })}
+                    className={cn(
+                        variants({
+                            dragging: isOverlay
+                                ? 'overlay'
+                                : isDragging
+                                ? 'over'
+                                : undefined,
+                        }),
+                        'border-none'
+                    )}
                 >
                     <CardHeader
                         className={cn(
@@ -237,13 +243,16 @@ export function TaskCard({
                 <Card
                     ref={setNodeRef}
                     style={style}
-                    className={variants({
-                        dragging: isOverlay
-                            ? 'overlay'
-                            : isDragging
-                            ? 'over'
-                            : undefined,
-                    })}
+                    className={cn(
+                        variants({
+                            dragging: isOverlay
+                                ? 'overlay'
+                                : isDragging
+                                ? 'over'
+                                : undefined,
+                        }),
+                        'border-none'
+                    )}
                 >
                     <CardHeader
                         className={cn(
@@ -276,13 +285,16 @@ export function TaskCard({
             <Card
                 ref={setNodeRef}
                 style={style}
-                className={variants({
-                    dragging: isOverlay
-                        ? 'overlay'
-                        : isDragging
-                        ? 'over'
-                        : undefined,
-                })}
+                className={cn(
+                    variants({
+                        dragging: isOverlay
+                            ? 'overlay'
+                            : isDragging
+                            ? 'over'
+                            : undefined,
+                    }),
+                    'border-none'
+                )}
             >
                 <CardHeader
                     className={cn(

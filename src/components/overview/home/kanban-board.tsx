@@ -191,12 +191,14 @@ export function KanbanBoard({
                     id => id === over.id
                 );
 
+                if (active.id === over.id) return;
+
                 setColumns(prevColumns => {
                     localStorage.setItem('cols', JSON.stringify(prevColumns));
                     return prevColumns;
                 });
 
-                toast.success('Column moved successfully');
+                toast.success('Column moved');
 
                 // console.log(
                 //     `Column ${
@@ -232,7 +234,11 @@ export function KanbanBoard({
                     });
 
                     toast.success(
-                        `${over.data.current.task.type.toLowerCase()} moved successfully`
+                        `${over.data.current.task.type
+                            .charAt(0)
+                            .toUpperCase()}${over.data.current.task.type
+                            .slice(1)
+                            .toLowerCase()} moved`
                     );
 
                     // console.log(
@@ -255,7 +261,10 @@ export function KanbanBoard({
                 });
 
                 toast.success(
-                    `${over.data.current.task.type.toLowerCase()} moved successfully`
+                    `${
+                        over.data.current.task.type.charAt(0).toUpperCase() +
+                        over.data.current.task.type.slice(1).toLowerCase()
+                    } moved`
                 );
 
                 // console.log(

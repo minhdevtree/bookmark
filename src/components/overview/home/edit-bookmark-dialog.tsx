@@ -86,7 +86,7 @@ export function EditBookmarkDialog({
         setChange((pre: boolean) => !pre);
         setIsLoading(false);
         router.refresh();
-        toast.success('Bookmark update successfully');
+        toast.success('Bookmark update');
         setOpen(false);
     }
 

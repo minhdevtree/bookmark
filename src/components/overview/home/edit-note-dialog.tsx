@@ -76,7 +76,11 @@ export function EditNoteDialog({
         setChange((pre: boolean) => !pre);
         setIsLoading(false);
         router.refresh();
-        toast.success(`${task.type.toLowerCase()} update successfully`);
+        toast.success(
+            `${task.type.charAt(0).toUpperCase()}${task.type
+                .slice(1)
+                .toLowerCase()} updated`
+        );
         setOpen(false);
     }
 

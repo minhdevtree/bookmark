@@ -76,7 +76,7 @@ export function BoardColumn({
             variants: {
                 dragging: {
                     default: 'border-2 border-transparent',
-                    over: 'ring-2 opacity-30',
+                    over: 'border-2 border-primary opacity-30',
                     overlay: 'ring-2 ring-primary',
                 },
             },
@@ -104,7 +104,7 @@ export function BoardColumn({
                         variant={'ghost'}
                         {...attributes}
                         {...listeners}
-                        className="p-1 text-primary/50 -ml-2 h-auto cursor-grab relative"
+                        className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
                     >
                         <span className="sr-only">{`Move column: ${column.title}`}</span>
                         <GripVertical />

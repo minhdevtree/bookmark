@@ -81,7 +81,7 @@ export function AddTaskDialog({
         setIsLoading(false);
         form.reset();
         router.refresh();
-        toast.success('Bookmark added successfully');
+        toast.success('Bookmark added');
         setOpen(false);
     }
 

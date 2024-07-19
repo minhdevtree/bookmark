@@ -49,7 +49,11 @@ export function DeleteTaskDialog({
         setChange((pre: boolean) => !pre);
         setIsLoading(false);
         router.refresh();
-        toast.success(`${task.type.toLowerCase()} ${task.title} deleted`);
+        toast.success(
+            `${task.type.charAt(0).toUpperCase()}${task.type
+                .slice(1)
+                .toLowerCase()} ${task.title} deleted`
+        );
         setOpen(false);
     };
     return (

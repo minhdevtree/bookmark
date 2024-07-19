@@ -76,7 +76,7 @@ export function BoardAddColumn({
 
         localStorage.setItem('cols', JSON.stringify(updatedCols));
         setColumns(updatedCols);
-        toast.success('Column added successfully');
+        toast.success('Column added');
         form.reset();
         setIsLoading(false);
         router.refresh();
@@ -88,7 +88,7 @@ export function BoardAddColumn({
                 <span className="mr-auto flex items-center">Add Column</span>
                 <Button
                     variant="hidden"
-                    className="p-1 text-primary/50 -ml-2 h-auto relative cursor-default"
+                    className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-default"
                 >
                     <Plus />
                 </Button>

@@ -81,7 +81,7 @@ export function AddNoteDialog({
         setIsLoading(false);
         form.reset();
         router.refresh();
-        toast.success('Note added successfully');
+        toast.success('Note added');
         setOpen(false);
     }
 
