@@ -104,6 +104,7 @@ export function BoardAddColumn() {
                           placeholder="Column Title"
                           disabled={isLoading}
                           {...field}
+                          autoFocus
                         />
                       </FormControl>
                       <FormMessage />
