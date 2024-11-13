@@ -16,308 +16,277 @@ import { SettingsType } from '@/lib/define';
 import { useState } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from 'sonner';
+import { useTask } from '@/components/provider/task-provider';
+import { useRouter } from 'next/navigation';
 
 export interface Task {
-    id: UniqueIdentifier;
-    columnId: string;
-    title: string;
-    content: string;
-    url: string;
-    type: string;
-    img: string;
-    isCompleted: boolean;
-    createdAt: string;
-    updatedAt: string;
+  id: UniqueIdentifier;
+  columnId: string;
+  title: string;
+  content: string;
+  url: string;
+  type: string;
+  img: string;
+  isCompleted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface TaskCardProps {
-    task: Task;
-    isOverlay?: boolean;
-    setChange?: any;
-    settings: SettingsType;
+  task: Task;
+  isOverlay?: boolean;
 }
 
 export type TaskType = 'Task';
 
 export interface TaskDragData {
-    type: TaskType;
-    task: Task;
+  type: TaskType;
+  task: Task;
 }
 
-export function TaskCard({
-    task,
-    isOverlay,
-    setChange,
-    settings,
-}: TaskCardProps) {
-    const {
-        setNodeRef,
-        attributes,
-        listeners,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({
-        id: task.id,
-        data: {
-            type: 'Task',
-            task,
-        } satisfies TaskDragData,
-        attributes: {
-            roleDescription: 'Task',
-        },
+export function TaskCard({ task, isOverlay }: TaskCardProps) {
+  const router = useRouter();
+  const { tasks, updateTasks, settings } = useTask();
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: 'Task',
+      task,
+    } satisfies TaskDragData,
+    attributes: {
+      roleDescription: 'Task',
+    },
+  });
+
+  const [showAlternatives, setShowAlternatives] = useState(false);
+
+  const style = {
+    transition,
+    transform: CSS.Translate.toString(transform),
+  };
+
+  const variants = cva('', {
+    variants: {
+      dragging: {
+        over: 'ring-2 opacity-30',
+        overlay: 'ring-2 ring-primary',
+      },
+    },
+  });
+
+  const handleCheckTask = (e: any) => {
+    task.isCompleted = e || false;
+
+    tasks.map((t: Task) => {
+      if (t.id === task.id) {
+        t.isCompleted = task.isCompleted;
+      }
     });
+    router.refresh();
+    updateTasks(tasks);
+    toast.success('Task updated');
+  };
 
-    const [showAlternatives, setShowAlternatives] = useState(false);
-
-    const style = {
-        transition,
-        transform: CSS.Translate.toString(transform),
-    };
-
-    const variants = cva('', {
-        variants: {
-            dragging: {
-                over: 'ring-2 opacity-30',
-                overlay: 'ring-2 ring-primary',
-            },
-        },
-    });
-
-    const handleCheckTask = (e: any) => {
-        task.isCompleted = e || false;
-
-        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        tasks.map((t: Task) => {
-            if (t.id === task.id) {
-                t.isCompleted = task.isCompleted;
-            }
-        });
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        setChange((pre: boolean) => !pre);
-        toast.success('Task updated');
-    };
-
-    if (task.type === 'BOOKMARK') {
-        return (
-            <TaskContextMenu task={task} setChange={setChange}>
-                <Link
-                    href={task.url}
-                    target={settings.openLinkInNewTab ? '_blank' : '_self'}
-                >
-                    <Card
-                        ref={setNodeRef}
-                        style={style}
-                        className={cn(
-                            variants({
-                                dragging: isOverlay
-                                    ? 'overlay'
-                                    : isDragging
-                                    ? 'over'
-                                    : undefined,
-                            }),
-                            'border-none'
-                        )}
-                    >
-                        <CardHeader
-                            className={cn(
-                                'p-2 space-between flex flex-row relative space-y-0'
-                            )}
-                        >
-                            <div className="mr-auto flex gap-2">
-                                <div className="flex items-center justify-center">
-                                    {showAlternatives ? (
-                                        <Image
-                                            src="/default-favicon/default-favicon.jpg"
-                                            alt={task.title}
-                                            onError={event => {
-                                                setShowAlternatives(true);
-                                            }}
-                                            width={24}
-                                            height={24}
-                                            className="overflow-hidden w-5 h-5 rounded-md"
-                                        />
-                                    ) : (
-                                        <Image
-                                            src={
-                                                task.img ||
-                                                '/default-favicon/default-favicon.jpg'
-                                            }
-                                            alt={task.title}
-                                            onError={() => {
-                                                setShowAlternatives(true);
-                                            }}
-                                            width={24}
-                                            height={24}
-                                            className="overflow-hidden w-5 h-5 rounded-md"
-                                        />
-                                    )}
-                                </div>
-
-                                <span className="flex items-center line-clamp-1">
-                                    <BasicTooltip
-                                        title={showLessText(task.title, 20)}
-                                        tooltipTitle={
-                                            task.content
-                                                ? task.content
-                                                : task.title
-                                        }
-                                    />
-                                </span>
-                            </div>
-
-                            <Button
-                                variant={'ghost'}
-                                {...attributes}
-                                {...listeners}
-                                className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
-                            >
-                                <span className="sr-only">Move task</span>
-                                <GripVertical />
-                            </Button>
-                        </CardHeader>
-                    </Card>
-                </Link>
-            </TaskContextMenu>
-        );
-    } else if (task.type === 'TASK') {
-        return (
-            <TaskContextMenu task={task} setChange={setChange}>
-                <Card
-                    ref={setNodeRef}
-                    style={style}
-                    className={cn(
-                        variants({
-                            dragging: isOverlay
-                                ? 'overlay'
-                                : isDragging
-                                ? 'over'
-                                : undefined,
-                        }),
-                        'border-none'
-                    )}
-                >
-                    <CardHeader
-                        className={cn(
-                            'p-2 space-between flex flex-row relative space-y-0'
-                        )}
-                    >
-                        <div className="mr-auto flex gap-2">
-                            <div className="flex items-center space-x-2">
-                                <Checkbox
-                                    checked={task.isCompleted}
-                                    id={'task-' + task.id}
-                                    onCheckedChange={event =>
-                                        handleCheckTask(event)
-                                    }
-                                />
-                                <label
-                                    htmlFor={'task-' + task.id}
-                                    className={cn(
-                                        'flex items-center line-clamp-1',
-                                        task.isCompleted && 'line-through'
-                                    )}
-                                >
-                                    {showLessText(task.title, 20)}
-                                </label>
-                            </div>
-                        </div>
-
-                        <Button
-                            variant={'ghost'}
-                            {...attributes}
-                            {...listeners}
-                            className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
-                        >
-                            <span className="sr-only">Move task</span>
-                            <GripVertical />
-                        </Button>
-                    </CardHeader>
-                </Card>
-            </TaskContextMenu>
-        );
-    } else if (task.type === 'NOTE') {
-        return (
-            <TaskContextMenu task={task} setChange={setChange}>
-                <Card
-                    ref={setNodeRef}
-                    style={style}
-                    className={cn(
-                        variants({
-                            dragging: isOverlay
-                                ? 'overlay'
-                                : isDragging
-                                ? 'over'
-                                : undefined,
-                        }),
-                        'border-none'
-                    )}
-                >
-                    <CardHeader
-                        className={cn(
-                            'p-2 space-between flex flex-row relative space-y-0'
-                        )}
-                    >
-                        <div className="mr-auto flex gap-2">
-                            <div className="flex items-center">
-                                <span className="flex items-center line-clamp-1">
-                                    {showLessText(task.title, 20)}
-                                </span>
-                            </div>
-                        </div>
-
-                        <Button
-                            variant={'ghost'}
-                            {...attributes}
-                            {...listeners}
-                            className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
-                        >
-                            <span className="sr-only">Move task</span>
-                            <GripVertical />
-                        </Button>
-                    </CardHeader>
-                </Card>
-            </TaskContextMenu>
-        );
-    } else {
-        return (
-            <Card
-                ref={setNodeRef}
-                style={style}
-                className={cn(
-                    variants({
-                        dragging: isOverlay
-                            ? 'overlay'
-                            : isDragging
-                            ? 'over'
-                            : undefined,
-                    }),
-                    'border-none'
-                )}
+  if (task.type === 'BOOKMARK') {
+    return (
+      <TaskContextMenu task={task}>
+        <Link
+          href={task.url}
+          target={settings.openLinkInNewTab ? '_blank' : '_self'}
+        >
+          <Card
+            ref={setNodeRef}
+            style={style}
+            className={cn(
+              variants({
+                dragging: isOverlay
+                  ? 'overlay'
+                  : isDragging
+                  ? 'over'
+                  : undefined,
+              }),
+              'border-none'
+            )}
+          >
+            <CardHeader
+              className={cn(
+                'p-2 space-between flex flex-row relative space-y-0'
+              )}
             >
-                <CardHeader
-                    className={cn(
-                        'p-2 space-between flex flex-row relative space-y-0'
-                    )}
-                >
-                    <div className="mr-auto flex gap-2">
-                        <span className="flex items-center line-clamp-1">
-                            Not support yet
-                        </span>
-                    </div>
+              <div className="mr-auto flex gap-2">
+                <div className="flex items-center justify-center">
+                  {showAlternatives ? (
+                    <Image
+                      src="/default-favicon/default-favicon.jpg"
+                      alt={task.title}
+                      placeholder="blur"
+                      blurDataURL="/default-favicon/default-favicon.jpg"
+                      width={24}
+                      height={24}
+                      className="overflow-hidden w-5 h-5 rounded-md"
+                    />
+                  ) : (
+                    <Image
+                      src={task.img || '/default-favicon/default-favicon.jpg'}
+                      alt={task.title}
+                      onError={() => {
+                        setShowAlternatives(true);
+                      }}
+                      placeholder="blur"
+                      blurDataURL="/default-favicon/default-favicon.jpg"
+                      width={24}
+                      height={24}
+                      className="overflow-hidden w-5 h-5 rounded-md"
+                    />
+                  )}
+                </div>
 
-                    <Button
-                        variant={'ghost'}
-                        {...attributes}
-                        {...listeners}
-                        className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
-                    >
-                        <span className="sr-only">Move task</span>
-                        <GripVertical />
-                    </Button>
-                </CardHeader>
-            </Card>
-        );
-    }
+                <span className="flex items-center line-clamp-1">
+                  <BasicTooltip
+                    title={showLessText(task.title, 20)}
+                    tooltipTitle={task.content ? task.content : task.title}
+                  />
+                </span>
+              </div>
+
+              <Button
+                variant={'ghost'}
+                {...attributes}
+                {...listeners}
+                className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
+              >
+                <span className="sr-only">Move task</span>
+                <GripVertical />
+              </Button>
+            </CardHeader>
+          </Card>
+        </Link>
+      </TaskContextMenu>
+    );
+  } else if (task.type === 'TASK') {
+    return (
+      <TaskContextMenu task={task}>
+        <Card
+          ref={setNodeRef}
+          style={style}
+          className={cn(
+            variants({
+              dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
+            }),
+            'border-none'
+          )}
+        >
+          <CardHeader
+            className={cn('p-2 space-between flex flex-row relative space-y-0')}
+          >
+            <div className="mr-auto flex gap-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  checked={task.isCompleted}
+                  id={'task-' + task.id}
+                  onCheckedChange={event => handleCheckTask(event)}
+                />
+                <label
+                  htmlFor={'task-' + task.id}
+                  className={cn(
+                    'flex items-center line-clamp-1',
+                    task.isCompleted && 'line-through'
+                  )}
+                >
+                  {showLessText(task.title, 20)}
+                </label>
+              </div>
+            </div>
+
+            <Button
+              variant={'ghost'}
+              {...attributes}
+              {...listeners}
+              className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
+            >
+              <span className="sr-only">Move task</span>
+              <GripVertical />
+            </Button>
+          </CardHeader>
+        </Card>
+      </TaskContextMenu>
+    );
+  } else if (task.type === 'NOTE') {
+    return (
+      <TaskContextMenu task={task}>
+        <Card
+          ref={setNodeRef}
+          style={style}
+          className={cn(
+            variants({
+              dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
+            }),
+            'border-none'
+          )}
+        >
+          <CardHeader
+            className={cn('p-2 space-between flex flex-row relative space-y-0')}
+          >
+            <div className="mr-auto flex gap-2">
+              <div className="flex items-center">
+                <span className="flex items-center line-clamp-1">
+                  {showLessText(task.title, 20)}
+                </span>
+              </div>
+            </div>
+
+            <Button
+              variant={'ghost'}
+              {...attributes}
+              {...listeners}
+              className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
+            >
+              <span className="sr-only">Move task</span>
+              <GripVertical />
+            </Button>
+          </CardHeader>
+        </Card>
+      </TaskContextMenu>
+    );
+  } else {
+    return (
+      <Card
+        ref={setNodeRef}
+        style={style}
+        className={cn(
+          variants({
+            dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
+          }),
+          'border-none'
+        )}
+      >
+        <CardHeader
+          className={cn('p-2 space-between flex flex-row relative space-y-0')}
+        >
+          <div className="mr-auto flex gap-2">
+            <span className="flex items-center line-clamp-1">
+              Not support yet
+            </span>
+          </div>
+
+          <Button
+            variant={'ghost'}
+            {...attributes}
+            {...listeners}
+            className="p-1 text-secondary-foreground/50 -ml-2 h-auto cursor-grab"
+          >
+            <span className="sr-only">Move task</span>
+            <GripVertical />
+          </Button>
+        </CardHeader>
+      </Card>
+    );
+  }
 }

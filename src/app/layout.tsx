@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/theme-provider/theme-provider';
 import { Suspense } from 'react';
 import FullPageLoadingOverlay from '@/components/shared/full-page-loading-overlay';
+import { TaskProvider } from '@/components/provider/task-provider';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -39,9 +40,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <div vaul-drawer-wrapper="">{children}</div>
+          <TaskProvider>
+            <div vaul-drawer-wrapper="">{children}</div>
+          </TaskProvider>
+          <Toaster />
         </ThemeProvider>
-        <Toaster />
       </body>
     </html>
   );
