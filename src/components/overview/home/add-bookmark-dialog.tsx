@@ -25,7 +25,6 @@ import { Task } from './task-card';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { UniqueIdentifier } from '@dnd-kit/core';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from '@/components/icons/icons';
 import { useTask } from '@/components/provider/task-provider';
@@ -55,7 +54,6 @@ export function AddBookmarkDialog({
   columnId: UniqueIdentifier;
 }) {
   const { tasks, updateTasks } = useTask();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,6 +67,7 @@ export function AddBookmarkDialog({
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+
     const bookmark = {
       id: uuidv4(),
       title: values.title,
@@ -80,12 +79,13 @@ export function AddBookmarkDialog({
       columnId,
       img: `https://s2.googleusercontent.com/s2/favicons?domain_url=${values.url}`,
     } as Task;
-    const bookmarks = tasks;
-    bookmarks.push(bookmark);
-    updateTasks(bookmarks);
+
+    // Create a new array with the new bookmark
+    const updatedBookmarks = [...tasks, bookmark];
+    updateTasks(updatedBookmarks); // Pass the new array reference to updateTasks
+
     setIsLoading(false);
     form.reset();
-    router.refresh();
     toast.success('Bookmark added');
     setOpen(false);
   }

@@ -60,15 +60,19 @@ export function EditTaskDialog({ task }: { task: Task }) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    tasks.map((t: Task) => {
+    const updatedTasks = tasks.map((t: Task) => {
       if (t.id === task.id) {
-        t.title = values.title;
-        t.content = values.content || '';
-        t.updatedAt = new Date().toISOString();
+        return {
+          ...t,
+          title: values.title,
+          content: values.content || '',
+          updatedAt: new Date().toISOString(),
+        };
       }
+      return t;
     });
-    updateTasks(tasks);
-    router.refresh();
+
+    updateTasks(updatedTasks);
     setIsLoading(false);
     toast.success(
       `${task.type.charAt(0).toUpperCase()}${task.type

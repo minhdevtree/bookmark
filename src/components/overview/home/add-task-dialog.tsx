@@ -25,7 +25,6 @@ import { Task } from './task-card';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { UniqueIdentifier } from '@dnd-kit/core';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from '@/components/icons/icons';
 import { Textarea } from '@/components/ui/textarea';
@@ -47,7 +46,6 @@ const formSchema = z.object({
 
 export function AddTaskDialog({ columnId }: { columnId: UniqueIdentifier }) {
   const { tasks, updateTasks } = useTask();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,11 +68,10 @@ export function AddTaskDialog({ columnId }: { columnId: UniqueIdentifier }) {
       columnId,
       isCompleted: false,
     } as Task;
-    tasks.push(task);
-    updateTasks(tasks);
+    const updatedTasks = [...tasks, task];
+    updateTasks(updatedTasks);
     setIsLoading(false);
     form.reset();
-    router.refresh();
     toast.success('Bookmark added');
     setOpen(false);
   }

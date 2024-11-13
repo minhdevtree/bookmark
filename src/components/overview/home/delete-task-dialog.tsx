@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Trash } from 'lucide-react';
@@ -21,7 +20,6 @@ import { useTask } from '@/components/provider/task-provider';
 
 export function DeleteTaskDialog({ task }: { task: Task }) {
   const { tasks, updateTasks } = useTask();
-  const router = useRouter();
   const [checkbox, setCheckbox] = useState(false);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +36,6 @@ export function DeleteTaskDialog({ task }: { task: Task }) {
     const updatedTasks = tasks.filter((task: any) => task.id !== deleteTask.id);
 
     updateTasks(updatedTasks);
-    router.refresh();
     setIsLoading(false);
     toast.success(
       `${task.type.charAt(0).toUpperCase()}${task.type

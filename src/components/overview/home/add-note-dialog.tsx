@@ -25,7 +25,6 @@ import { Task } from './task-card';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { UniqueIdentifier } from '@dnd-kit/core';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Icons } from '@/components/icons/icons';
 import { Textarea } from '@/components/ui/textarea';
@@ -47,7 +46,6 @@ const formSchema = z.object({
 
 export function AddNoteDialog({ columnId }: { columnId: UniqueIdentifier }) {
   const { tasks, updateTasks } = useTask();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,6 +58,7 @@ export function AddNoteDialog({ columnId }: { columnId: UniqueIdentifier }) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+
     const note = {
       id: uuidv4(),
       title: values.title,
@@ -70,11 +69,12 @@ export function AddNoteDialog({ columnId }: { columnId: UniqueIdentifier }) {
       columnId,
       isCompleted: false,
     } as Task;
-    tasks.push(note);
-    updateTasks(tasks);
+
+    const updatedTasks = [...tasks, note];
+    updateTasks(updatedTasks);
+
     setIsLoading(false);
     form.reset();
-    router.refresh();
     toast.success('Note added');
     setOpen(false);
   }

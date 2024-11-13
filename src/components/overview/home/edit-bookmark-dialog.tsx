@@ -28,7 +28,6 @@ import { Icons } from '@/components/icons/icons';
 import { FilePenLine } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useTask } from '@/components/provider/task-provider';
-import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   title: z
@@ -50,7 +49,6 @@ const formSchema = z.object({
 });
 
 export function EditBookmarkDialog({ task }: { task: Task }) {
-  const router = useRouter();
   const { tasks, updateTasks } = useTask();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -66,18 +64,20 @@ export function EditBookmarkDialog({ task }: { task: Task }) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    const bookmarks = tasks;
-    bookmarks.map((bookmark: Task) => {
+    const updatedBookmarks = tasks.map((bookmark: Task) => {
       if (bookmark.id === task.id) {
-        bookmark.title = values.title;
-        bookmark.content = values.content || '';
-        bookmark.url = values.url;
-        bookmark.updatedAt = new Date().toISOString();
-        bookmark.img = `https://s2.googleusercontent.com/s2/favicons?domain_url=${values.url}`;
+        return {
+          ...bookmark,
+          title: values.title,
+          content: values.content || '',
+          url: values.url,
+          updatedAt: new Date().toISOString(),
+          img: `https://s2.googleusercontent.com/s2/favicons?domain_url=${values.url}`,
+        };
       }
+      return bookmark;
     });
-    updateTasks(bookmarks);
-    router.refresh();
+    updateTasks(updatedBookmarks);
     setIsLoading(false);
     toast.success('Bookmark update');
     setOpen(false);

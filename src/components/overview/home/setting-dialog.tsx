@@ -13,13 +13,11 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { FolderOutput, Import, Settings } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 export function SettingDialog() {
   const { settings, cols, tasks, updateCols, updateTasks, updateSettings } =
     useTask();
-  const router = useRouter();
   const handleExportData = () => {
     try {
       const dataStr = JSON.stringify({ cols, tasks });
@@ -67,7 +65,6 @@ export function SettingDialog() {
           }
           updateCols(importedData.cols);
           updateTasks(importedData.tasks);
-          router.refresh();
         };
         reader.readAsText(file);
       };

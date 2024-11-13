@@ -28,7 +28,6 @@ import { Icons } from '@/components/icons/icons';
 import { FilePenLine } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useTask } from '@/components/provider/task-provider';
-import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   title: z
@@ -45,7 +44,6 @@ const formSchema = z.object({
 });
 
 export function EditNoteDialog({ task }: { task: Task }) {
-  const router = useRouter();
   const { tasks, updateTasks } = useTask();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,16 +58,19 @@ export function EditNoteDialog({ task }: { task: Task }) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    const notes = tasks;
-    notes.map((note: Task) => {
+    const updatedTasks = tasks.map((note: Task) => {
       if (note.id === task.id) {
-        note.title = values.title;
-        note.content = values.content || '';
-        note.updatedAt = new Date().toISOString();
+        return {
+          ...note,
+          title: values.title,
+          content: values.content || '',
+          updatedAt: new Date().toISOString(),
+        };
       }
+      return note;
     });
-    updateTasks(notes);
-    router.refresh();
+
+    updateTasks(updatedTasks);
     setIsLoading(false);
     toast.success(
       `${task.type.charAt(0).toUpperCase()}${task.type
