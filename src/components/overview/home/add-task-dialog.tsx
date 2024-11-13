@@ -128,7 +128,7 @@ export function AddTaskDialog({ columnId }: { columnId: UniqueIdentifier }) {
                       {...field}
                     /> */}
 
-                    {/* Experimental feature */}
+                    {/* TODO: Experimental feature */}
                     <MinimalTiptapEditor
                       {...field}
                       throttleDelay={2000}

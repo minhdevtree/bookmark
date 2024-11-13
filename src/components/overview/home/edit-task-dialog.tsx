@@ -110,14 +110,32 @@ export function EditTaskDialog({ task }: { task: Task }) {
                     Title <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    {/* Use this if tiptap editor have UI bugs */}
-                    {/* <Input
+                    <Input
                       placeholder="Title"
                       disabled={isLoading}
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Content </FormLabel>
+                  <FormControl>
+                    {/* Use this if tiptap editor have UI bugs */}
+                    {/* <Textarea
+                      placeholder="Content"
+                      disabled={isLoading}
+                      className="resize-none min-h-96"
+                      {...field}
                     /> */}
 
-                    {/* Experimental feature */}
+                    {/* TODO: Experimental feature */}
                     <MinimalTiptapEditor
                       {...field}
                       throttleDelay={2000}
@@ -132,24 +150,6 @@ export function EditTaskDialog({ task }: { task: Task }) {
                       editable={true}
                       injectCSS={true}
                       editorClassName="focus:outline-none px-5 py-4 h-full grow"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Content"
-                      disabled={isLoading}
-                      className="resize-none min-h-96"
-                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

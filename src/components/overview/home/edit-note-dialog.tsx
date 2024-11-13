@@ -133,7 +133,7 @@ export function EditNoteDialog({ task }: { task: Task }) {
                       {...field}
                     /> */}
 
-                    {/* Experimental feature */}
+                    {/* TODO: Experimental feature */}
                     <MinimalTiptapEditor
                       {...field}
                       throttleDelay={2000}
