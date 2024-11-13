@@ -29,6 +29,8 @@ import { FilePenLine } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { useTask } from '@/components/provider/task-provider';
 import { useRouter } from 'next/navigation';
+import { MinimalTiptapEditor } from '@/components/minimal-tiptap';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   title: z
@@ -108,10 +110,28 @@ export function EditTaskDialog({ task }: { task: Task }) {
                     Title <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input
+                    {/* Use this if tiptap editor have UI bugs */}
+                    {/* <Input
                       placeholder="Title"
                       disabled={isLoading}
                       {...field}
+                    /> */}
+
+                    {/* Experimental feature */}
+                    <MinimalTiptapEditor
+                      {...field}
+                      throttleDelay={2000}
+                      className={cn('resize-none min-h-96 w-full rounded-xl', {
+                        'border-destructive focus-within:border-destructive':
+                          form.formState.errors.content,
+                      })}
+                      editorContentClassName="overflow-auto h-full flex grow"
+                      output="html"
+                      immediatelyRender={false}
+                      placeholder="Content goes here"
+                      editable={true}
+                      injectCSS={true}
+                      editorClassName="focus:outline-none px-5 py-4 h-full grow"
                     />
                   </FormControl>
                   <FormMessage />

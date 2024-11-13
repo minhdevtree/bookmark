@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/theme-provider/theme-provider';
 import { Suspense } from 'react';
 import FullPageLoadingOverlay from '@/components/shared/full-page-loading-overlay';
 import { TaskProvider } from '@/components/provider/task-provider';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -40,9 +41,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           enableSystem
           disableTransitionOnChange
         >
-          <TaskProvider>
-            <div vaul-drawer-wrapper="">{children}</div>
-          </TaskProvider>
+          <TooltipProvider>
+            <TaskProvider>
+              <div vaul-drawer-wrapper="">{children}</div>
+            </TaskProvider>
+          </TooltipProvider>
           <Toaster />
         </ThemeProvider>
       </body>
