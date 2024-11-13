@@ -39,7 +39,7 @@ export function BoardColumn({ column, isOverlay }: BoardColumnProps) {
     return tasks
       .filter(task => task.columnId === column.id)
       .map(task => task.id);
-  }, [tasks]);
+  }, [tasks, column.id]);
 
   const {
     setNodeRef,
