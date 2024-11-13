@@ -7,27 +7,27 @@
 }
 
 .minimal-tiptap-editor .ProseMirror h1 {
-  @apply mb-4 mt-[46px] text-[1.375rem] leading-7 tracking-[-0.004375rem];
+  @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
 }
 
 .minimal-tiptap-editor .ProseMirror h2 {
-  @apply mb-3.5 mt-8 text-[1.1875rem] leading-7 tracking-[0.003125rem];
+  @apply scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0;
 }
 
 .minimal-tiptap-editor .ProseMirror h3 {
-  @apply mb-3 mt-6 text-[1.0625rem] leading-6 tracking-[0.00625rem];
+  @apply scroll-m-20 text-2xl font-semibold tracking-tight;
 }
 
 .minimal-tiptap-editor .ProseMirror h4 {
-  @apply mb-2 mt-4 text-[0.9375rem] leading-6;
+  @apply scroll-m-20 text-xl font-semibold tracking-tight;
 }
 
 .minimal-tiptap-editor .ProseMirror h5 {
-  @apply mb-2 mt-4 text-sm;
+  @apply scroll-m-20 text-lg font-semibold tracking-tight;
 }
 
 .minimal-tiptap-editor .ProseMirror h5 {
-  @apply mb-2 mt-4 text-sm;
+  @apply scroll-m-20 text-lg font-semibold tracking-tight;
 }
 
 .minimal-tiptap-editor .ProseMirror a.link {
