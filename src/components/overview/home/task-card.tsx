@@ -83,7 +83,7 @@ function BookmarkTask({
             variants({
               dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
             }),
-            'border-none'
+            'border-none shadow-md'
           )}
         >
           <CardHeader className="p-2 space-between flex flex-row relative space-y-0">
@@ -97,8 +97,6 @@ function BookmarkTask({
                   }
                   alt={task.title}
                   onError={() => setShowAlternatives(true)}
-                  placeholder="blur"
-                  blurDataURL="/default-favicon/default-favicon.jpg"
                   width={24}
                   height={24}
                   className="overflow-hidden w-5 h-5 rounded-md"
@@ -154,7 +152,7 @@ function TodoTask({
           variants({
             dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
           }),
-          'border-none'
+          'border-none shadow-md'
         )}
       >
         <CardHeader
@@ -213,7 +211,7 @@ function NoteTask({
           variants({
             dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
           }),
-          'border-none'
+          'border-none shadow-md'
         )}
       >
         <CardHeader
@@ -309,7 +307,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
             variants({
               dragging: isOverlay ? 'overlay' : isDragging ? 'over' : undefined,
             }),
-            'border-none'
+            'border-none shadow-md'
           )}
         >
           <CardHeader className="p-2 flex justify-between items-center">

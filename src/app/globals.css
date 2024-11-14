@@ -10,9 +10,9 @@
     --muted-foreground: 215.4 16.3% 46.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
+    --card: 60 100% 98%;
     --card-foreground: 222.2 84% 4.9%;
-    --border: 220 2% 93%;
+    --border: 220 13.39% 90.41%;
     --input: 214.3 31.8% 91.4%;
     --primary: 220 66% 58%;
     --primary-foreground: 210 40% 98%;
@@ -40,7 +40,7 @@
     --popover-foreground: 210 40% 98%;
     --card: 233 21% 15%;
     --card-foreground: 210 40% 98%;
-    --border: 220 2% 13%;
+    --border: 217.78 20% 26.47%;
     --input: 217.78 20% 26.47%;
     --primary: 220 66% 75%;
     --primary-foreground: 233 19% 19%;
@@ -96,4 +96,9 @@ body {
 .h-card {
   height: calc(90vh - 1.1rem);
   max-height: calc(90vh - 1.1rem);
+}
+
+.w-board {
+  width: calc(100vw - 2rem);
+  max-width: calc(100vw - 2rem);
 }

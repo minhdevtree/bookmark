@@ -6,7 +6,6 @@ import { ModeToggle } from '@/components/shared/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Home() {
   return (
@@ -25,7 +24,7 @@ export default function Home() {
           <SettingDialog />
         </div>
       </header>
-      <div className="w-full text-center fixed">
+      <div className="w-board text-center fixed">
         <KanbanBoard />
       </div>
     </div>

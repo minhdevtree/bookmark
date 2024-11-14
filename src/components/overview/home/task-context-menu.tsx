@@ -22,11 +22,7 @@ export function TaskContextMenu({
       <ContextMenuContent className="w-32">
         {task.type === 'BOOKMARK' && <EditBookmarkDialog task={task} />}
         {task.type === 'TASK' && <EditTaskDialog task={task} />}
-        {task.type === 'NOTE' && (
-          <>
-            <EditNoteDialog task={task} />
-          </>
-        )}
+        {task.type === 'NOTE' && <EditNoteDialog task={task} />}
         <DeleteTaskDialog task={task} />
       </ContextMenuContent>
     </ContextMenu>
