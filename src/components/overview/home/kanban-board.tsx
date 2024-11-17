@@ -1,8 +1,5 @@
-'use client';
-
 import { useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-
 import { BoardColumn, BoardContainer } from './board-column';
 import {
   DndContext,
@@ -26,6 +23,11 @@ import { coordinateGetter } from './multiple-containers-keyboard-preset';
 import { BoardAddColumn } from './board-add-column';
 import { toast } from 'sonner';
 import { useTask } from '@/components/provider/task-provider';
+import { throttle } from 'lodash';
+import React from 'react';
+import { startTransition } from 'react';
+
+const THROTTLE_DELAY = 100; // Throttle delay in milliseconds
 
 export function KanbanBoard() {
   const { cols: columns, tasks, updateCols, updateTasks } = useTask();
@@ -34,7 +36,6 @@ export function KanbanBoard() {
   const columnsId = useMemo(() => columns.map(col => col.id), [columns]);
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null);
-
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   const sensors = useSensors(
@@ -43,6 +44,15 @@ export function KanbanBoard() {
     useSensor(KeyboardSensor, {
       coordinateGetter: coordinateGetter,
     })
+  );
+
+  const throttledUpdateCols = useMemo(
+    () => throttle(updateCols, THROTTLE_DELAY),
+    [updateCols]
+  );
+  const throttledUpdateTasks = useMemo(
+    () => throttle(updateTasks, THROTTLE_DELAY),
+    [updateTasks]
   );
 
   function getDraggingTaskData(taskId: UniqueIdentifier, columnId: string) {
@@ -94,7 +104,6 @@ export function KanbanBoard() {
     },
     onDragOver({ active, over }) {
       if (!hasDraggableData(active) || !hasDraggableData(over)) return;
-
       if (
         active.data.current?.type === 'Column' &&
         over.data.current?.type === 'Column'
@@ -154,13 +163,12 @@ export function KanbanBoard() {
         over.data.current?.type === 'Column'
       ) {
         const overColumnPosition = columnsId.findIndex(id => id === over.id);
-
         if (active.id === over.id) return;
-
-        updateCols(
-          arrayMove(columns, columnsId.indexOf(active.id), overColumnPosition)
-        );
-
+        startTransition(() => {
+          throttledUpdateCols(
+            arrayMove(columns, columnsId.indexOf(active.id), overColumnPosition)
+          );
+        });
         toast.success('Column moved');
 
         // console.log(
@@ -184,8 +192,9 @@ export function KanbanBoard() {
           over.data.current.task.columnId
         );
         if (over.data.current.task.columnId !== pickedUpTaskColumn.current) {
-          updateTasks(tasks);
-
+          startTransition(() => {
+            throttledUpdateTasks(tasks);
+          });
           toast.success(
             `${over.data.current.task.type
               .charAt(0)
@@ -205,8 +214,9 @@ export function KanbanBoard() {
             taskPosition + 1
           } of ${tasksInColumn.length}`;
         }
-        updateTasks(tasks);
-
+        startTransition(() => {
+          throttledUpdateTasks(tasks);
+        });
         toast.success(
           `${
             over.data.current.task.type.charAt(0).toUpperCase() +
@@ -272,7 +282,6 @@ export function KanbanBoard() {
       setActiveColumn(data.column);
       return;
     }
-
     if (data?.type === 'Task') {
       setActiveTask(data.task);
       return;
@@ -282,72 +291,65 @@ export function KanbanBoard() {
   function onDragEnd(event: DragEndEvent) {
     setActiveColumn(null);
     setActiveTask(null);
-
     const { active, over } = event;
     if (!over) return;
-
     const activeId = active.id;
     const overId = over.id;
-
     if (!hasDraggableData(active)) return;
-
     const activeData = active.data.current;
-
     if (activeId === overId) return;
-
     const isActiveAColumn = activeData?.type === 'Column';
     if (!isActiveAColumn) return;
-
     const activeColumnIndex = columns.findIndex(col => col.id === activeId);
     const overColumnIndex = columns.findIndex(col => col.id === overId);
-    updateCols(arrayMove(columns, activeColumnIndex, overColumnIndex));
+    startTransition(() => {
+      throttledUpdateCols(
+        arrayMove(columns, activeColumnIndex, overColumnIndex)
+      );
+    });
   }
 
   function onDragOver(event: DragOverEvent) {
     const { active, over } = event;
     if (!over) return;
-
     const activeId = active.id;
     const overId = over.id;
-
     if (activeId === overId) return;
-
     if (!hasDraggableData(active) || !hasDraggableData(over)) return;
-
     const activeData = active.data.current;
     const overData = over.data.current;
-
     const isActiveATask = activeData?.type === 'Task';
     const isOverATask = overData?.type === 'Task';
-
     if (!isActiveATask) return;
-
-    // Im dropping a Task over another Task
+    const updatedTasks = [...tasks];
+    const activeIndex = updatedTasks.findIndex(t => t.id === activeId);
     if (isActiveATask && isOverATask) {
-      const updatedTasks = [...tasks];
-      const activeIndex = updatedTasks.findIndex(t => t.id === activeId);
       const overIndex = updatedTasks.findIndex(t => t.id === overId);
       const activeTask = updatedTasks[activeIndex];
       const overTask = updatedTasks[overIndex];
       if (activeTask && overTask && activeTask.columnId !== overTask.columnId) {
         activeTask.columnId = overTask.columnId;
-        updateTasks(arrayMove(updatedTasks, activeIndex, overIndex - 1));
+        startTransition(() => {
+          throttledUpdateTasks(
+            arrayMove(updatedTasks, activeIndex, Math.max(0, overIndex - 1))
+          );
+        });
         return;
       }
-
-      updateTasks(arrayMove(updatedTasks, activeIndex, overIndex));
+      startTransition(() => {
+        throttledUpdateTasks(arrayMove(updatedTasks, activeIndex, overIndex));
+      });
     }
-
     const isOverAColumn = overData?.type === 'Column';
-
-    // Im dropping a Task over a column
     if (isActiveATask && isOverAColumn) {
-      const updatedTasks = [...tasks];
-      const activeIndex = updatedTasks.findIndex(t => t.id === activeId);
       const activeTask = updatedTasks[activeIndex];
       if (activeTask) {
         activeTask.columnId = overId as string;
-        updateTasks(arrayMove(updatedTasks, activeIndex, activeIndex));
+        startTransition(() => {
+          throttledUpdateTasks(
+            arrayMove(updatedTasks, activeIndex, activeIndex)
+          );
+        });
       }
     }
   }

@@ -6,6 +6,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useRef,
 } from 'react';
 import type { Column } from '../overview/home/board-column';
 import { Task } from '../overview/home/task-card';
@@ -37,6 +38,9 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     openLinkInNewTab: false,
   });
 
+  // Debounce references
+  const debounceRef = useRef<{ [key: string]: NodeJS.Timeout }>({});
+
   useEffect(() => {
     // Load data from localStorage on mount
     const storedCols = localStorage.getItem('cols') || '[]';
@@ -48,19 +52,47 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
     if (storedSettings) setSettings(JSON.parse(storedSettings));
   }, []);
 
+  const debounce = (key: string, callback: () => void, delay: number) => {
+    if (debounceRef.current[key]) {
+      clearTimeout(debounceRef.current[key]);
+    }
+    debounceRef.current[key] = setTimeout(() => {
+      callback();
+      delete debounceRef.current[key];
+    }, delay);
+  };
+
   const updateCols = (newCols: Column[]) => {
     setCols(newCols);
-    localStorage.setItem('cols', JSON.stringify(newCols));
+    debounce(
+      'cols',
+      () => {
+        localStorage.setItem('cols', JSON.stringify(newCols));
+      },
+      2000
+    );
   };
 
   const updateTasks = (newTasks: Task[]) => {
     setTasks(newTasks);
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
+    debounce(
+      'tasks',
+      () => {
+        localStorage.setItem('tasks', JSON.stringify(newTasks));
+      },
+      2000
+    );
   };
 
   const updateSettings = (newSettings: SettingsType) => {
     setSettings(newSettings);
-    localStorage.setItem('settings', JSON.stringify(newSettings));
+    debounce(
+      'settings',
+      () => {
+        localStorage.setItem('settings', JSON.stringify(newSettings));
+      },
+      1000
+    );
   };
 
   return (
