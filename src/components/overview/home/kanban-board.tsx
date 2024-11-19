@@ -164,11 +164,10 @@ export function KanbanBoard() {
       ) {
         const overColumnPosition = columnsId.findIndex(id => id === over.id);
         if (active.id === over.id) return;
-        startTransition(() => {
-          throttledUpdateCols(
-            arrayMove(columns, columnsId.indexOf(active.id), overColumnPosition)
-          );
-        });
+        throttledUpdateCols(
+          arrayMove(columns, columnsId.indexOf(active.id), overColumnPosition)
+        );
+
         toast.success('Column moved');
 
         // console.log(
@@ -302,11 +301,7 @@ export function KanbanBoard() {
     if (!isActiveAColumn) return;
     const activeColumnIndex = columns.findIndex(col => col.id === activeId);
     const overColumnIndex = columns.findIndex(col => col.id === overId);
-    startTransition(() => {
-      throttledUpdateCols(
-        arrayMove(columns, activeColumnIndex, overColumnIndex)
-      );
-    });
+    throttledUpdateCols(arrayMove(columns, activeColumnIndex, overColumnIndex));
   }
 
   function onDragOver(event: DragOverEvent) {
