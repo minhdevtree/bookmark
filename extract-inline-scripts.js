@@ -13,28 +13,41 @@ fs.mkdirSync(scriptDir, { recursive: true });
 // Read index.html content
 let indexHtml = fs.readFileSync(indexPath, 'utf-8');
 
-// Regular expression to match inline scripts, even multi-line
-const scriptRegex = /<script>([\s\S]*?)<\/script>/g;
+// Updated regular expression to match all inline scripts, including those with complex structures
+const scriptRegex = /<script\b[^>]*>([\s\S]*?)<\/script>/gi;
+
 let match;
 let scriptCounter = 1;
 
+// Array to store replacements to avoid modifying indexHtml during the loop
+const replacements = [];
+
 // Process each inline script
 while ((match = scriptRegex.exec(indexHtml)) !== null) {
-  const scriptContent = match[1];
-  const scriptFileName = `script${scriptCounter}.js`;
-  const scriptFilePath = path.join(scriptDir, scriptFileName);
+  const scriptContent = match[1].trim();
 
-  // Write the script content to a new file
-  fs.writeFileSync(scriptFilePath, scriptContent, 'utf-8');
+  // Only process non-empty scripts
+  if (scriptContent) {
+    const scriptFileName = `script${scriptCounter}.js`;
+    const scriptFilePath = path.join(scriptDir, scriptFileName);
 
-  // Replace the inline script with a reference to the new file
-  indexHtml = indexHtml.replace(
-    match[0],
-    `<script src="./next/static/js/${scriptFileName}"></script>`
-  );
+    // Write the script content to a new file
+    fs.writeFileSync(scriptFilePath, scriptContent, 'utf-8');
 
-  scriptCounter++;
+    // Prepare the replacement for later to avoid modifying `indexHtml` during iteration
+    replacements.push({
+      original: match[0],
+      replacement: `<script src="./next/static/js/${scriptFileName}"></script>`,
+    });
+
+    scriptCounter++;
+  }
 }
+
+// Apply all replacements at once
+replacements.forEach(({ original, replacement }) => {
+  indexHtml = indexHtml.replace(original, replacement);
+});
 
 // Save the modified index.html back to the out directory
 fs.writeFileSync(indexPath, indexHtml, 'utf-8');
