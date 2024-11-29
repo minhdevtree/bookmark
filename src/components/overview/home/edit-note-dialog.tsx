@@ -123,7 +123,9 @@ export function EditNoteDialog({ task }: { task: Task }) {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content </FormLabel>
+                  <FormLabel id="minimal-tiptap-edit-content">
+                    Content{' '}
+                  </FormLabel>
                   <FormControl>
                     {/* Use this if tiptap editor have UI bugs */}
                     {/* <Textarea
@@ -137,17 +139,17 @@ export function EditNoteDialog({ task }: { task: Task }) {
                     <MinimalTiptapEditor
                       {...field}
                       throttleDelay={2000}
-                      className={cn('resize-none min-h-96 w-full rounded-xl', {
+                      className={cn('w-full overflow-auto', {
                         'border-destructive focus-within:border-destructive':
                           form.formState.errors.content,
                       })}
-                      editorContentClassName="overflow-auto h-full flex grow"
+                      editorContentClassName="editor-content"
                       output="html"
-                      immediatelyRender={false}
                       placeholder="Content goes here"
+                      immediatelyRender={false}
                       editable={true}
                       injectCSS={true}
-                      editorClassName="focus:outline-none px-5 py-4 h-full grow"
+                      editorClassName="focus:outline-none p-5"
                     />
                   </FormControl>
                   <FormMessage />

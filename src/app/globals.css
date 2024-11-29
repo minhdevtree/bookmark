@@ -88,6 +88,13 @@
   }
 }
 
+.editor-content {
+  word-break: break-word; /* Break long words to prevent overflow */
+  overflow-wrap: break-word; /* Ensure long words wrap */
+  white-space: pre-wrap; /* Preserve whitespace while still wrapping long words */
+  max-width: 100%; /* Ensure content doesn't overflow container */
+}
+
 body {
   /* https://stackoverflow.com/questions/69923665/chrome-extension-shows-incorrect-font-size-compared-to-the-local-dev-testing */
   font-size: 100%;

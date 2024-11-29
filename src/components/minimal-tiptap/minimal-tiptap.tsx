@@ -14,6 +14,7 @@ import { SectionFive } from './components/section/five';
 import { LinkBubbleMenu } from './components/bubble-menu/link-bubble-menu';
 import { useMinimalTiptapEditor } from './hooks/use-minimal-tiptap';
 import { MeasuredContainer } from './components/measured-container';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
 export interface MinimalTiptapProps
   extends Omit<UseMinimalTiptapEditorProps, 'onUpdate'> {
@@ -88,6 +89,30 @@ export const MinimalTiptapEditor = React.forwardRef<
       ...props,
     });
 
+    const handleClick = () => {
+      if (editor && !editor?.isFocused) {
+        editor?.chain().focus().run();
+      }
+    };
+    React.useEffect(() => {
+      const handleSmoothScroll = () => {
+        const element = document.getElementById('minimal-tiptap-edit-content');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+
+      if (editor) {
+        editor.on('focus', handleSmoothScroll);
+      }
+
+      return () => {
+        if (editor) {
+          editor.off('focus', handleSmoothScroll);
+        }
+      };
+    }, [editor]);
+
     if (!editor) {
       return null;
     }
@@ -98,15 +123,20 @@ export const MinimalTiptapEditor = React.forwardRef<
         name="editor"
         ref={ref}
         className={cn(
-          'flex h-auto min-h-72 w-[100vw] flex-col rounded-md border border-input shadow-sm focus-within:border-primary',
+          'flex h-auto min-h-72 w-full flex-col rounded-md border border-input shadow-sm focus-within:border-primary',
           className
         )}
       >
         {!hideToolbar && <Toolbar editor={editor} />}
-        <EditorContent
-          editor={editor}
-          className={cn('minimal-tiptap-editor', editorContentClassName)}
-        />
+        <div className="h-full grow" onClick={handleClick}>
+          <ScrollArea className="h-[80vh]">
+            <EditorContent
+              editor={editor}
+              className={cn('minimal-tiptap-editor', editorContentClassName)}
+            />
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </div>
         <LinkBubbleMenu editor={editor} />
       </MeasuredContainer>
     );
