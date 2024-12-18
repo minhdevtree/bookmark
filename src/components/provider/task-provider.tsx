@@ -36,6 +36,7 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [settings, setSettings] = useState<SettingsType>({
     openLinkInNewTab: false,
+    showNotifications: true,
   });
 
   // Debounce references
@@ -49,7 +50,11 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
 
     if (storedCols) setCols(JSON.parse(storedCols));
     if (storedTasks) setTasks(JSON.parse(storedTasks));
-    if (storedSettings) setSettings(JSON.parse(storedSettings));
+    if (storedSettings && Object.keys(JSON.parse(storedSettings)).length) {
+      setSettings(JSON.parse(storedSettings));
+    } else {
+      localStorage.setItem('settings', JSON.stringify(settings));
+    }
   }, []);
 
   const debounce = (key: string, callback: () => void, delay: number) => {

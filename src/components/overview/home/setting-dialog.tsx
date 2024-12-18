@@ -81,6 +81,14 @@ export function SettingDialog() {
       openLinkInNewTab: !settings.openLinkInNewTab,
     });
   };
+
+  const handleShowNotifications = () => {
+    updateSettings({
+      ...settings,
+      showNotifications: !settings.showNotifications,
+    });
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -100,6 +108,14 @@ export function SettingDialog() {
             onCheckedChange={handleOpenLinkInNewTab}
           />
           <Label htmlFor="airplane-mode">Open link in new tab</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Switch
+            id="airplane-mode"
+            checked={settings.showNotifications}
+            onCheckedChange={handleShowNotifications}
+          />
+          <Label htmlFor="airplane-mode">Show notifications</Label>
         </div>
         <div className="flex justify-center gap-5 mt-5">
           <Button className="gap-2" onClick={handleExportData}>

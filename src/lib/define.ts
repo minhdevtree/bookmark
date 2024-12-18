@@ -1,3 +1,4 @@
 export type SettingsType = {
-    openLinkInNewTab: boolean;
+  openLinkInNewTab: boolean;
+  showNotifications: boolean;
 };

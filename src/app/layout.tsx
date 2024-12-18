@@ -5,8 +5,6 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/theme-provider/theme-provider';
-import { Suspense } from 'react';
-import FullPageLoadingOverlay from '@/components/shared/full-page-loading-overlay';
 import { TaskProvider } from '@/components/provider/task-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -44,9 +42,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <TooltipProvider>
             <TaskProvider>
               <div vaul-drawer-wrapper="">{children}</div>
+              <Toaster />
             </TaskProvider>
           </TooltipProvider>
-          <Toaster />
         </ThemeProvider>
       </body>
     </html>

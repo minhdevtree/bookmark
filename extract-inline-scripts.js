@@ -57,7 +57,7 @@ console.log(`Extracted ${scriptCounter - 1} inline scripts to external files.`);
 const manifestContent = {
   manifest_version: 3,
   name: 'Bookmark Manager',
-  version: '1.0',
+  version: '0.1.2',
   description: 'A bookmark manager replacing the new tab page.',
   chrome_url_overrides: {
     newtab: 'index.html',
